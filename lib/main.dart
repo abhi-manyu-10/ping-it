@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 // --- YOUR NEW MODULAR IMPORTS ---
 import 'models/ping_model.dart';
 import 'screens/profile_screen.dart';
+import 'screens/discover_screen.dart';
 import 'utils/share_helper.dart';
 
 void main() {
@@ -228,7 +229,7 @@ appBar: AppBar(
         },
         children: [
           _buildActivityFeed(),       
-          const Center(child: Text("Search Coming Soon")), 
+  DiscoverScreen(globalPings: _allPings.map((p) => p.toMap()).toList()), 
           ProfileScreen(
             historyPings: _allPings.map((ping) => {
               "title": ping.title,
@@ -261,7 +262,7 @@ appBar: AppBar(
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.explore), label: 'Explore'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Discover'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),

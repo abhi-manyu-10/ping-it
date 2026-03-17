@@ -7,6 +7,7 @@ class Ping {
   final String hostId; // To check against user's friend list
   final String hostName;
   final String title;
+  String date;
   final String description; // For the "Ask Question" context
   final ActivityCategory category;
   final String timeWindow; 
@@ -36,6 +37,20 @@ class Ping {
     this.isExpanded = false,
     this.isFriendHost = false,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      "id": id,
+      "hostId": hostId,
+      "title": title,
+      "location": location,
+      "timeWindow": timeWindow,
+      "categoryName": category.name,
+      "neededSpots": neededSpots,
+      "totalSpots": totalSpots,
+      // We can add logic here later to determine color based on category
+    };
+  }
 
   // SMART GETTERS
   Color get color {
