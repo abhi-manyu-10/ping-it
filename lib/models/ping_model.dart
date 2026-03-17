@@ -1,68 +1,41 @@
 import 'package:flutter/material.dart';
 
-enum ActivityCategory { sports, music, art, hangout, tech, other }
+enum ActivityCategory { sports, music, art, hangout, other }
 
 class Ping {
   final String id;
-  final String hostId; // To check against user's friend list
-  final String hostName;
-  final String title;
-  String date;
-  final String description; // For the "Ask Question" context
-  final ActivityCategory category;
-  final String timeWindow; 
-  final String location;
-  final String? igGroupLink; // THE IG UPGRADE
-  
+  String hostId;
+  String hostName;
+  String title;
+  String description;
+  ActivityCategory category;
+  String date; // NEW: Added Date
+  String timeWindow;
+  String location;
   int neededSpots;
-  final int totalSpots;
-  
+  int totalSpots;
   bool isJoined;
+  bool isFriendHost;
   bool isExpanded;
-  bool isFriendHost; // For the "Friends on Top" dopamine effect
+  String? igGroupLink;
 
   Ping({
     required this.id,
     required this.hostId,
     required this.hostName,
     required this.title,
-    this.description = "No description provided.",
+    this.description = "",
     required this.category,
+    required this.date, // NEW
     required this.timeWindow,
     required this.location,
-    this.igGroupLink,
     required this.neededSpots,
     required this.totalSpots,
     this.isJoined = false,
-    this.isExpanded = false,
     this.isFriendHost = false,
+    this.isExpanded = false,
+    this.igGroupLink,
   });
-
-  Map<String, dynamic> toMap() {
-    return {
-      "id": id,
-      "hostId": hostId,
-      "title": title,
-      "location": location,
-      "timeWindow": timeWindow,
-      "categoryName": category.name,
-      "neededSpots": neededSpots,
-      "totalSpots": totalSpots,
-      // We can add logic here later to determine color based on category
-    };
-  }
-
-  // SMART GETTERS
-  Color get color {
-    switch (category) {
-      case ActivityCategory.sports: return const Color(0xFF4CAF50);
-      case ActivityCategory.music: return const Color(0xFFFF9800);
-      case ActivityCategory.art: return const Color(0xFF2196F3);
-      case ActivityCategory.hangout: return const Color(0xFFE91E63);
-      case ActivityCategory.tech: return const Color(0xFF9C27B0);
-      default: return Colors.blueGrey;
-    }
-  }
 
   IconData get icon {
     switch (category) {
@@ -70,8 +43,65 @@ class Ping {
       case ActivityCategory.music: return Icons.mic_external_on;
       case ActivityCategory.art: return Icons.brush;
       case ActivityCategory.hangout: return Icons.groups;
-      case ActivityCategory.tech: return Icons.code;
-      default: return Icons.bolt;
+      default: return Icons.local_activity;
+    }
+  }
+
+  Color get color {
+    switch (category) {
+      case ActivityCategory.sports: return Colors.greenAccent;
+      case ActivityCategory.music: return Colors.orangeAccent;
+      case ActivityCategory.art: return Colors.blueAccent;
+      case ActivityCategory.hangout: return Colors.purpleAccent;
+      default: return const Color(0xFFBB86FC);
+    }
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "id": id,
+      "hostId": hostId,
+      "title": title,
+      "location": location,
+      "date": date,
+      "timeWindow": timeWindow,
+      "categoryName": category.name,
+      "neededSpots": neededSpots,
+      "totalSpots": totalSpots,
+      "color": color,
+    };
+  }
+}
+
+// NEW: The Hub Folder Class
+class PingHub {
+  final String id;
+  String hostId;
+  String hostName;
+  String title;
+  String location;
+  ActivityCategory category;
+  List<Ping> pings; // The nested folder contents
+  bool isExpanded;
+
+  PingHub({
+    required this.id,
+    required this.hostId,
+    required this.hostName,
+    required this.title,
+    required this.location,
+    required this.category,
+    required this.pings,
+    this.isExpanded = false,
+  });
+
+  Color get color {
+    switch (category) {
+      case ActivityCategory.sports: return Colors.greenAccent;
+      case ActivityCategory.music: return Colors.orangeAccent;
+      case ActivityCategory.art: return Colors.blueAccent;
+      case ActivityCategory.hangout: return Colors.purpleAccent;
+      default: return const Color(0xFFBB86FC);
     }
   }
 }
